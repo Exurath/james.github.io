@@ -256,7 +256,7 @@ export const calculateSizes = (isSmall, isMobile, isTablet) => {
         // Making rings more visible - brought them closer to the center and forward in Z
         ringPosition: isSmall ? [-3, 5, 2] : isMobile ? [-5, 5, 2] : isTablet ? [-7, 5, 2] : [-10, 5, 2],
 
-        targetPosition: isSmall ? [-5, -10, -10] : isMobile ? [-9, -10, -10] : isTablet ? [-11, -7, -10] : [-13, -13, -10],
+        targetPosition: isSmall ? [-5, -8, -10] : isMobile ? [-9, -8, -10] : isTablet ? [-11, -5, -10] : [-13, -11, -10],
     };
 };
 
