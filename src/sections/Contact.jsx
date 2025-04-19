@@ -1,37 +1,70 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
     const formRef = useRef();
 
-    const [loading, setLoading] = useState(false);
-
     const [form, setForm] = useState({
         name: '',
         email: '',
-        message: ''
-    })
+        message: '',
+    });
 
-    const handleChange = ({ target: { name, value }}) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = ({ target: { name, value } }) => {
         setForm({ ...form, [name]: value });
-    }
-    const handleSubmit = () => {}
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const result = await emailjs.send(
+                'service_11hcs4k', // EmailJS Service ID
+                'template_v1rm9if', // EmailJS Template ID
+                {
+                    from_name: form.name,
+                    to_name: 'James',
+                    from_email: form.email,
+                    to_email: 'gwapoko3726@gmail.com',
+                    message: form.message,
+                },
+                'zJ71Y6KC2qNUMn-At' // EmailJS Public Key
+            );
+
+            console.log('Email sent successfully:', result);
+            alert('Your message has been sent! 😃');
+
+            // Reset form fields
+            setForm({ name: '', email: '', message: '' });
+        } catch (error) {
+            console.error('Email sending error:', error);
+            alert('Something went wrong. Please try again. 😢');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <section className="c-space my-20">
             <div className="relative min-h-screen flex items-center justify-center flex-col">
-                <img src="/assets/terminal.png" alt="terminal background" className="absolute inset-0 min-h-screen" />
+                <img
+                    src="/assets/terminal.png"
+                    alt="terminal background"
+                    className="absolute inset-0 w-full h-full object-cover -z-10 pointer-events-none"
+                />
+
                 <div className="contact-container">
-                    <h3 className="head-text">
-                        Let's talk
-                    </h3>
+                    <h3 className="head-text">Let's talk</h3>
                     <p className="text-lg text-white-600 mt-3">
                         Whether you're looking to build a new website, improve your existing platform, or bring a unique project to life, I'm here to help.
                     </p>
+
                     <form ref={formRef} onSubmit={handleSubmit} className="mt-12 flex flex-col space-y-7">
                         <label className="space-y-3">
-                            <span className="field-label">
-                                Full Name
-                            </span>
+                            <span className="field-label">Full Name</span>
                             <input
                                 type="text"
                                 name="name"
@@ -42,10 +75,9 @@ const Contact = () => {
                                 placeholder="John Doe"
                             />
                         </label>
+
                         <label className="space-y-3">
-                            <span className="field-label">
-                                Email
-                            </span>
+                            <span className="field-label">Email</span>
                             <input
                                 type="email"
                                 name="email"
@@ -53,13 +85,12 @@ const Contact = () => {
                                 onChange={handleChange}
                                 required
                                 className="field-input"
-                                placeholder="JohnDoe@gmail.com"
+                                placeholder="johndoe@gmail.com"
                             />
                         </label>
+
                         <label className="space-y-3">
-                            <span className="field-label">
-                                Your message
-                            </span>
+                            <span className="field-label">Your message</span>
                             <textarea
                                 name="message"
                                 value={form.message}
@@ -73,15 +104,13 @@ const Contact = () => {
 
                         <button className="field-btn" type="submit" disabled={loading}>
                             {loading ? 'Sending...' : 'Send Message'}
-
-                            <img src="/assets/arrow-up.png" alt="arrow-up" className="field-btn_arrow"/>
+                            <img src="/assets/arrow-up.png" alt="arrow-up" className="field-btn_arrow" />
                         </button>
                     </form>
                 </div>
             </div>
-
-
         </section>
-    )
-}
-export default Contact
+    );
+};
+
+export default Contact;
